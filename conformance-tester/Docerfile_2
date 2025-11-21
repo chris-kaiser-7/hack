@@ -1,0 +1,20 @@
+# Use a minimal base image with Docker installed
+FROM docker:24.0.5-cli
+
+# Install required packages: bash, curl for kind, and kubectl
+RUN apk add --no-cache bash curl
+
+# Install kind
+ENV KIND_VERSION=v0.23.0
+RUN curl -Lo /usr/local/bin/kind https://kind.sigs.k8s.io/dl/${KIND_VERSION}/kind-linux-amd64 \
+    && chmod +x /usr/local/bin/kind
+
+# Install kubectl
+ENV KUBECTL_VERSION=v1.29.0
+RUN curl -LO "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl" \
+    && chmod +x kubectl \
+    && mv kubectl /usr/local/bin/
+
+# Set default entrypoint to bash
+ENTRYPOINT ["bash"]
+
